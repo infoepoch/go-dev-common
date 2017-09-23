@@ -7,6 +7,7 @@ import "github.com/infoepoch/go-dev-common/beego/utils/cache"
 
 // 调用方法初始化
 cache.InitRedis()
+
 // 调用方法
 
 // 获取 JsapiTicket
