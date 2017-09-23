@@ -6,8 +6,6 @@ import (
 	"errors"
 	"time"
 
-	"fmt"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/cache"
 	_ "github.com/astaxie/beego/cache/redis"
