@@ -6,17 +6,15 @@ import (
 	"errors"
 	"time"
 
-	"fmt"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/cache"
 	_ "github.com/astaxie/beego/cache/redis"
+	"github.com/astaxie/beego/logs"
 )
 
 var cc cache.Cache
 
 func InitRedis() {
-	// cc = &cache.Cache{}
 	var err error
 
 	defer func() {
@@ -25,25 +23,27 @@ func InitRedis() {
 			cc = nil
 		}
 	}()
+
 	redisHost := beego.AppConfig.String("redis_host")
 	appName := beego.AppConfig.String("appname")
-	fmt.Println("RedisHost: " + redisHost)
+	logs.Info("redis host: " + redisHost)
+
 	cc, err = cache.NewCache("redis", `{"key":"`+appName+`","conn":"`+redisHost+`"}`)
 
 	if err != nil {
-		fmt.Println(err)
+		logs.Error(err)
 	} else {
-		fmt.Println("initRedis success")
+		logs.Info("init redis success")
 	}
 }
 
 func SetCache(key string, value interface{}, timeout int) error {
-	data, err := Encode(value)
+	data, err := GobEncode(value)
 	if err != nil {
 		return err
 	}
 	if cc == nil {
-		return errors.New("cc is nil")
+		return errors.New("redis is nil")
 	}
 
 	defer func() {
@@ -52,13 +52,14 @@ func SetCache(key string, value interface{}, timeout int) error {
 			cc = nil
 		}
 	}()
+
 	timeouts := time.Duration(timeout) * time.Second
 	err = cc.Put(key, data, timeouts)
 	if err != nil {
-		fmt.Println("设置Cache失败，key:", key)
+		logs.Error("set redis cache error，key:", key)
 		return err
 	} else {
-		fmt.Println("设置Cache成功，key:", key)
+		logs.Info("set redis cache success，key:", key)
 		return nil
 	}
 }
@@ -66,7 +67,7 @@ func SetCache(key string, value interface{}, timeout int) error {
 func GetCache(key string, to interface{}) error {
 
 	if cc == nil {
-		panic(errors.New("cc is nil"))
+		panic(errors.New("redis is nil"))
 	}
 
 	defer func() {
@@ -78,14 +79,14 @@ func GetCache(key string, to interface{}) error {
 
 	data := cc.Get(key)
 	if data == nil {
-		return errors.New("Cache不存在")
+		return errors.New("redis cache not exist")
 	}
 	//fmt.Println(data)
-	err := Decode(data.([]byte), to)
+	err := GobDecode(data.([]byte), to)
 	if err != nil {
-		fmt.Println("获取Cache失败", key, err)
+		logs.Error("get redis cache error", key, err)
 	} else {
-		fmt.Println("获取Cache成功", key)
+		logs.Info("get redis cache success", key)
 	}
 
 	return err
@@ -93,7 +94,7 @@ func GetCache(key string, to interface{}) error {
 
 func DelCache(key string) error {
 	if cc == nil {
-		return errors.New("cc is nil")
+		return errors.New("redis is nil")
 	}
 
 	defer func() {
@@ -105,9 +106,9 @@ func DelCache(key string) error {
 
 	err := cc.Delete(key)
 	if err != nil {
-		return errors.New("Cache删除失败")
+		return errors.New("redis cache delete error")
 	} else {
-		fmt.Println("删除Cache成功 " + key)
+		logs.Info("redis cache delete success ", key)
 		return nil
 	}
 }
@@ -115,8 +116,8 @@ func DelCache(key string) error {
 // --------------------
 // Encode
 // 用gob进行数据编码
-//
-func Encode(data interface{}) ([]byte, error) {
+// todo 待迁移至公用库
+func GobEncode(data interface{}) ([]byte, error) {
 	buf := bytes.NewBuffer(nil)
 	enc := gob.NewEncoder(buf)
 	err := enc.Encode(data)
@@ -129,8 +130,8 @@ func Encode(data interface{}) ([]byte, error) {
 // -------------------
 // Decode
 // 用gob进行数据解码
-//
-func Decode(data []byte, to interface{}) error {
+// todo 待迁移至公用库
+func GobDecode(data []byte, to interface{}) error {
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
 	return dec.Decode(to)

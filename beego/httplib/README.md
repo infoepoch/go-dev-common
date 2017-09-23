@@ -1,7 +1,7 @@
 # httplib
 
 ## 导入包
-```
+```go
     go get github.com/learninton/beegolibs/httplib
     
     import (
@@ -10,7 +10,7 @@
 ```
 
 ## GET
-```
+```go
     b,err := httplib.Get("req url")
     
     // 转换成自己的结构体
