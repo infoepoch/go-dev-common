@@ -12,19 +12,15 @@ beego 的 cache 模块是用来做数据缓存的，设计思路来自于 `datab
 
 ## 使用入门
 
-首先在beego的配置文件加入，例如使用内存cache
-
-    cache_type = memory
-    cache_config = {"interval":600}
-
-然后在main.go 入口函数中 初始化，使得配置生效
+首先在main.go 入口函数中 初始化，使得配置生效
 
     import (
         "github.com/infoepoch/go-dev-common/beego/cache"
     )
 
 	func init() {
-    	cache.CacheInit()
+	    // cache_type 和 cache_config 参照引擎设置
+    	cache.CacheInit(cache_type, cache_config)
     }
 
 然后我们就可以使用bm增删改缓存：
@@ -100,7 +96,7 @@ beego cache 模块采用了接口的方式实现，因此用户可以很方便�
 
 
 ## 我的使用案例
-```go
+
     // 获取 JsapiTicket
     func GetJsapiTicket() (server.JsApiToken, error) {
         // 解决并发多同时访问
@@ -120,4 +116,31 @@ beego cache 模块采用了接口的方式实现，因此用户可以很方便�
         mutex.Unlock()
         return token, err
     }
-```
+
+## cache val 建议加密
+
+    /*
+        Encode
+        用gob进行数据编码
+        todo 待迁移至公用库
+    */
+    func GobEncode(data interface{}) ([]byte, error) {
+        buf := bytes.NewBuffer(nil)
+        enc := gob.NewEncoder(buf)
+        err := enc.Encode(data)
+        if err != nil {
+            return nil, err
+        }
+        return buf.Bytes(), nil
+    }
+    
+    /*
+        Decode
+        用gob进行数据解码
+        todo 待迁移至公用库
+    */
+    func GobDecode(data []byte, to interface{}) error {
+        buf := bytes.NewBuffer(data)
+        dec := gob.NewDecoder(buf)
+        return dec.Decode(to)
+    }
