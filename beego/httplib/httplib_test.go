@@ -18,6 +18,10 @@ import (
 	"testing"
 )
 
+func init() {
+	InitHttplib(5, 5)
+}
+
 func TestGet(t *testing.T) {
 	b, err := Get("http://httpbin.org/get")
 	if err != nil {

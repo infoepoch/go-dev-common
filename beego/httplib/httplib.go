@@ -2,7 +2,6 @@ package httplib
 
 import (
 	"encoding/json"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
 	"time"
@@ -11,16 +10,9 @@ import (
 var httpConnectTimeout time.Duration
 var httpReadWriteTimeout time.Duration
 
-func init() {
-	hct, _ := beego.AppConfig.Int64("httpconnecttimeout")
-	hrwt, _ := beego.AppConfig.Int64("httpreadwritetimeout")
-
-	httpConnectTimeout = time.Duration(hct) * time.Second
-	httpReadWriteTimeout = time.Duration(hrwt) * time.Second
-	// TODO 运行 go test  取消 21行和22行的注释
-	//httpConnectTimeout = time.Duration(5) * time.Second
-	//httpReadWriteTimeout = time.Duration(5) * time.Second
-
+func InitHttplib(_http_connect_timeout int16, _http_read_write_timeout int64) {
+	httpConnectTimeout = time.Duration(_http_connect_timeout) * time.Second
+	httpReadWriteTimeout = time.Duration(_http_read_write_timeout) * time.Second
 }
 
 func Get(reqUrl string) ([]byte, error) {
