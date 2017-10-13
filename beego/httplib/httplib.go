@@ -10,7 +10,7 @@ import (
 var httpConnectTimeout time.Duration
 var httpReadWriteTimeout time.Duration
 
-func InitHttplib(_http_connect_timeout int16, _http_read_write_timeout int64) {
+func InitHttplib(_http_connect_timeout int, _http_read_write_timeout int) {
 	httpConnectTimeout = time.Duration(_http_connect_timeout) * time.Second
 	httpReadWriteTimeout = time.Duration(_http_read_write_timeout) * time.Second
 }

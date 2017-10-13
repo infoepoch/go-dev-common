@@ -31,7 +31,7 @@ func (this *RestlibController) SuccessList(list interface{}, sum_count int64) {
 
 //失败返回
 //{ "error_code": 错误码, "error_msg": "错误消息"}
-func (this *RestlibController) Error(msg string, code int) {
+func (this *RestlibController) Error(msg interface{}, code int) {
 	data := make(map[string]interface{})
 	data["errcode"] = code
 	data["errmsg"] = msg
