@@ -6,24 +6,26 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type RestlibController struct {
+type Controller struct {
 	beego.Controller
 }
 
 /*
 * 成功跳转
  */
-func (this *RestlibController) Success(data interface{}) {
+func (this *Controller) Success(data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON()
 	this.StopRun()
 }
 
 // 返回状态内容
-func (this *RestlibController) SuccessList(list interface{}, sum_count int64) {
+func (this *Controller) SuccessList(list interface{}, total int64, offset int64, limit int64) {
 	data := make(map[string]interface{})
+	data["offset"] = offset
+	data["limit"] = limit
 	data["list"] = list
-	data["sum_count"] = sum_count
+	data["total"] = total
 	this.Data["json"] = data
 	this.ServeJSON()
 	this.StopRun()
@@ -31,17 +33,17 @@ func (this *RestlibController) SuccessList(list interface{}, sum_count int64) {
 
 //失败返回
 //{ "error_code": 错误码, "error_msg": "错误消息"}
-func (this *RestlibController) Error(msg interface{}, code int) {
+func (this *Controller) Error(message interface{}, code int) {
 	data := make(map[string]interface{})
-	data["errcode"] = code
-	data["errmsg"] = msg
+	data["errorCode"] = code
+	data["message"] = message
 	this.Data["json"] = data
 	this.ServeJSON()
 	this.StopRun()
 }
 
 // 获取 post JSON 数据 转换成入参类型
-func (this *RestlibController) GetPostJson(v interface{}) ([]byte, error) {
+func (this *Controller) GetPostJson(v interface{}) ([]byte, error) {
 	b := this.Ctx.Input.RequestBody
 	err := json.Unmarshal(b, &v)
 	return b, err
