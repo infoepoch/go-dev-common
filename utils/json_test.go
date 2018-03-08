@@ -45,7 +45,7 @@ func TestTransStrToJSON3(t *testing.T) {
 	str := `{"errcode": 43003,"errmsg": "require https"}`
 	t.Log(str)
 	var accessToken AccessToken
-	err := TransStrToJSON(str, &accessToken)
+	err := JsonFromStr(str, &accessToken)
 	if err != nil {
 		t.Error(err.Error())
 	}
