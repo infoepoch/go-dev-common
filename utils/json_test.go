@@ -19,7 +19,7 @@ func TestTransStrToJSON1(t *testing.T) {
 	str := `{"errcode": 0,"errmsg": "ok","access_token": "fw8ef8we8f76e6f7s8df8s"}`
 	t.Log(str)
 	var accessToken AccessToken
-	err := TransStrToJSON(str, &accessToken)
+	err := JsonFromStr(str, &accessToken)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -32,7 +32,7 @@ func TestTransStrToJSON2(t *testing.T) {
 	str := `{"errcode": 43003,"errmsg": "require https"}`
 	t.Log(str)
 	var errCode ErrCodeMsg
-	err := TransStrToJSON(str, &errCode)
+	err := JsonFromStr(str, &errCode)
 	if err != nil {
 		t.Error(err.Error())
 	}
