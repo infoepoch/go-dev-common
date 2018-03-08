@@ -6,3 +6,6 @@ go:
   - 1.10.x
   
 script: go test -v ./...
+
+notifications:
+   webhooks: https://oapi.dingtalk.com/robot/send?access_token=1fabcf762bbfe8bf5900a71175e5070ee516b388fe6a4bd862980412c7f537c2
