@@ -12,11 +12,11 @@ func TestIsOpenid(t *testing.T) {
 }
 
 func TestIsMobile(t *testing.T) {
-	if IsMobile("17712345678") {
-		t.Log("17712345678 is the mobile")
+	if IsMobile("11111111111") {
+		t.Log("11111111111 is the mobile")
 	}
-	if !IsMobile("17712345678") {
-		t.Log("17712345678 is not mobile")
+	if !IsMobile("11111111111") {
+		t.Log("11111111111 is not mobile")
 	}
 }
 
