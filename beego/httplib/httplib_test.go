@@ -78,3 +78,16 @@ func TestPut(t *testing.T) {
 		t.Fatal(" not found in post")
 	}
 }
+
+func TestPostForm(t *testing.T) {
+	param := make(map[string]string)
+	param["Openid"] = "openid"
+
+	b, err := PostForm("http://httpbin.org/post", param)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(string(b))
+}

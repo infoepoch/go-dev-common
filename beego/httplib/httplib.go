@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-var httpConnectTimeout time.Duration
-var httpReadWriteTimeout time.Duration
+var httpConnectTimeout time.Duration = 5
+var httpReadWriteTimeout time.Duration = 5
 
 func InitHttplib(_http_connect_timeout int, _http_read_write_timeout int) {
 	httpConnectTimeout = time.Duration(_http_connect_timeout) * time.Second
@@ -26,6 +26,7 @@ func Get(reqUrl string) ([]byte, error) {
 	return b, err
 }
 
+// POST RAW JSON
 func Post(reqUrl string, params interface{}) ([]byte, error) {
 	logs.Info("request-post-url: " + reqUrl)
 	log_params_str, _ := json.Marshal(params)
@@ -49,5 +50,22 @@ func Put(reqUrl string, params interface{}) ([]byte, error) {
 
 	logs.Info("request-put-error: ", err)
 	logs.Info("request-put-data: " + string(b))
+	return b, err
+}
+
+// POST FROM
+func PostForm(reqUrl string, params map[string]string) ([]byte, error) {
+	logs.Info("request-post-from-url: " + reqUrl)
+
+
+	req := httplib.Post(reqUrl)
+	req.SetTimeout(httpConnectTimeout, httpReadWriteTimeout)
+	for k, v := range params {
+		req.Param(k, v)
+	}
+	b, err := req.Bytes()
+
+	logs.Info("request-post-from-error: ", err)
+	logs.Info("request-post-from-data: " + string(b))
 	return b, err
 }
