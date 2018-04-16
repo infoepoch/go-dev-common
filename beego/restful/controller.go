@@ -10,34 +10,44 @@ type Controller struct {
 	beego.Controller
 }
 
+type ResIo struct {
+	Data   interface{} `json:"data"`
+	Status int64       `json:"status"`
+	Info   string      `json:"info"`
+}
+
+type ResListIo struct {
+	Offset int64       `json:"offset"`
+	Limit  int64       `json:"limit"`
+	Total  int64       `json:"total"`
+	Data   interface{} `json:"data"`
+	Status int64       `json:"status"`
+	Info   string      `json:"info"`
+}
+
 /*
 * 成功跳转
  */
 func (this *Controller) Success(data interface{}) {
-	this.Data["json"] = data
+	this.Data["json"] = ResIo{
+		data,
+		200,
+		"Success",
+	}
 	this.ServeJSON()
 	this.StopRun()
 }
 
 // 返回状态内容
-func (this *Controller) SuccessList(list interface{}, total int64, offset int64, limit int64) {
-	data := make(map[string]interface{})
-	data["offset"] = offset
-	data["limit"] = limit
-	data["list"] = list
-	data["total"] = total
-	this.Data["json"] = data
+func (this *Controller) SuccessList(io ResListIo) {
+	this.Data["json"] = io
 	this.ServeJSON()
 	this.StopRun()
 }
 
 //失败返回
-//{ "error_code": 错误码, "error_msg": "错误消息"}
-func (this *Controller) Error(message interface{}, code int) {
-	data := make(map[string]interface{})
-	data["errorCode"] = code
-	data["message"] = message
-	this.Data["json"] = data
+func (this *Controller) Error(r ResIo) {
+	this.Data["json"] = r
 	this.ServeJSON()
 	this.StopRun()
 }
