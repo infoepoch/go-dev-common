@@ -13,7 +13,7 @@ type Controller struct {
 type ResIo struct {
 	Data   interface{} `json:"data"`
 	Status int64       `json:"status"`
-	Info   string      `json:"info"`
+	Info   interface{}      `json:"info"`
 }
 
 type ResListIo struct {
@@ -22,7 +22,7 @@ type ResListIo struct {
 	Total  int64       `json:"total"`
 	Data   interface{} `json:"data"`
 	Status int64       `json:"status"`
-	Info   string      `json:"info"`
+	Info   interface{}      `json:"info"`
 }
 
 /*
