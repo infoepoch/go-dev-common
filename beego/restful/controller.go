@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego"
+	"net/url"
 )
 
 type Controller struct {
@@ -57,4 +58,58 @@ func (this *Controller) GetPostJson(v interface{}) ([]byte, error) {
 	b := this.Ctx.Input.RequestBody
 	err := json.Unmarshal(b, &v)
 	return b, err
+}
+
+type UtmIo struct {
+	UtmSource   string `json:"utm_source"`   // 广告来源
+	UtmMedium   string `json:"utm_medium"`   // 广告媒介
+	UtmCampaign string `json:"utm_campaign"` // 广告名称
+	UtmContent  string `json:"utm_content"`  // 广告内容
+	UtmTerm     string `json:"utm_term"`     // 广告关键字
+}
+
+func (c *Controller) GetUtm() {
+	// 获取 url
+	utm_source := c.GetString("utm_source")
+	utm_medium := c.GetString("utm_medium")
+	utm_campaign := c.GetString("utm_campaign")
+	utm_content := c.GetString("utm_content")
+	utm_term := c.GetString("utm_term")
+
+	// 设置到 session
+	c.SetSession("utm_source", utm_source)
+	c.SetSession("utm_medium", utm_medium)
+	c.SetSession("utm_campaign", utm_campaign)
+	c.SetSession("utm_content", utm_content)
+	c.SetSession("utm_term", utm_term)
+}
+
+// 获取传递URL字符串
+func (c *Controller) GetUtmUrlStr() string {
+	u := url.Values{}
+	utm_source := c.GetSession("utm_source")
+	if utm_source != nil && utm_source.(string) != "" {
+		u.Add("utm_source", utm_source.(string))
+	}
+
+	utm_medium := c.GetSession("utm_medium")
+	if utm_medium != nil && utm_medium.(string) != "" {
+		u.Add("utm_medium", utm_medium.(string))
+	}
+
+	utm_campaign := c.GetSession("utm_campaign")
+	if utm_campaign != nil && utm_campaign.(string) != "" {
+		u.Add("utm_campaign", utm_campaign.(string))
+	}
+
+	utm_content := c.GetSession("utm_content")
+	if utm_content != nil && utm_content != "" {
+		u.Add("utm_content", utm_content.(string))
+	}
+
+	utm_term := c.GetSession("utm_term")
+	if utm_term != nil && utm_term.(string) != "" {
+		u.Add("utm_term", utm_term.(string))
+	}
+	return u.Encode()
 }
