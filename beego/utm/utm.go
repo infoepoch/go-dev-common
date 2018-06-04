@@ -1,11 +1,13 @@
 package utm
 
 import (
-	"github.com/astaxie/beego"
 	"net/url"
+
+	"github.com/astaxie/beego"
 	"github.com/infoepoch/go-dev-common/beego/restful"
 )
 
+// UtmIo UTM 结构体
 type UtmIo struct {
 	UtmSource   string `json:"utm_source"`   // 广告来源
 	UtmMedium   string `json:"utm_medium"`   // 广告媒介
@@ -14,13 +16,14 @@ type UtmIo struct {
 	UtmTerm     string `json:"utm_term"`     // 广告关键字
 }
 
+// GetUtm 获取
 func GetUtm(c beego.Controller) {
 	// 获取 url
-	utm_source := c.GetString("utm_source")
-	utm_medium := c.GetString("utm_medium")
-	utm_campaign := c.GetString("utm_campaign")
-	utm_content := c.GetString("utm_content")
-	utm_term := c.GetString("utm_term")
+	var utm_source := c.GetString("utm_source")
+	var utm_medium := c.GetString("utm_medium")
+	var utm_campaign := c.GetString("utm_campaign")
+	var utm_content := c.GetString("utm_content")
+	var utm_term := c.GetString("utm_term")
 
 	// 设置到 session
 	c.SetSession("utm_source", utm_source)
@@ -30,7 +33,7 @@ func GetUtm(c beego.Controller) {
 	c.SetSession("utm_term", utm_term)
 }
 
-// 获取传递URL字符串
+// GetUtmUrlStr 获取传递URL字符串
 func GetUtmUrlStr(c restful.Controller) string {
 	u := url.Values{}
 	utm_source := c.GetSession("utm_source").(string)

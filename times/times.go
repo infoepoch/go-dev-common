@@ -89,6 +89,7 @@ func Format(format string, ts ...time.Time) string {
 	return t.Format(format)
 }
 
+// GetTimeZone 获取时区
 func GetTimeZone() (zoneName, zoneValue string) {
 	zoneName, offset := time.Now().Zone()
 
@@ -101,6 +102,7 @@ func GetTimeZone() (zoneName, zoneValue string) {
 	return
 }
 
+// StrToTime 获取格式化后的时间
 func StrToTime(value string) (time.Time, error) {
 	if value == "" {
 		return time.Now(), errors.New("empty time string")
