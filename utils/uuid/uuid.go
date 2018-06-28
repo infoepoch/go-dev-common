@@ -15,7 +15,10 @@
 // +----------------------------------------------------------------------
 package uuid
 
-import "errors"
+import (
+	"errors"
+	"github.com/satori/go.uuid"
+)
 
 // GetUUID 获取 uuid
 func GetUUID() (string, error) {

@@ -21,7 +21,7 @@ import (
 )
 
 func TestGetUuid(t *testing.T) {
-	s, e := GetUuid()
+	s, e := GetUUID()
 	if e != nil {
 		t.Error(e.Error())
 	}
