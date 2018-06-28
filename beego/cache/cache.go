@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/logs"
 
 	"errors"
+
 	_ "github.com/astaxie/beego/cache/memcache"
 	_ "github.com/astaxie/beego/cache/redis"
 )
@@ -33,7 +34,7 @@ func InitCache(_type string, _config string) error {
 	return err
 }
 
-// get cached value by key.
+// Get cached value by key.
 func Get(key string) interface{} {
 	if _cache == nil {
 		logs.Error("get cache is nil")
@@ -68,7 +69,7 @@ func GetMulti(keys []string) []interface{} {
 	return _cache.GetMulti(keys)
 }
 
-// set cached value with key and expire time.
+// Put set cached value with key and expire time.
 func Put(key string, value interface{}, timeout int64) error {
 	if _cache == nil {
 		return errors.New("put cache is nil")
@@ -86,7 +87,7 @@ func Put(key string, value interface{}, timeout int64) error {
 	return _cache.Put(key, value, tot)
 }
 
-// delete cached value by key.
+// Delete cached value by key.
 func Delete(key string) error {
 	if _cache == nil {
 		return errors.New("delete cache is nil")
@@ -108,7 +109,7 @@ func Delete(key string) error {
 	}
 }
 
-// increase cached int value by key, as a counter.
+// Incr increase cached int value by key, as a counter.
 func Incr(key string) error {
 	if _cache == nil {
 		logs.Error("incr cache is nil")
@@ -125,7 +126,7 @@ func Incr(key string) error {
 	return _cache.Incr(key)
 }
 
-// decrease cached int value by key, as a counter.
+// Decr decrease cached int value by key, as a counter.
 func Decr(key string) error {
 	if _cache == nil {
 		logs.Error("decr cache is nil")
@@ -142,7 +143,7 @@ func Decr(key string) error {
 	return _cache.Decr(key)
 }
 
-// check if cached value exists or not.
+// IsExist check if cached value exists or not.
 func IsExist(key string) bool {
 	if _cache == nil {
 		logs.Error("is_exist cache is nil")
@@ -159,7 +160,7 @@ func IsExist(key string) bool {
 	return _cache.IsExist(key)
 }
 
-// clear all cache.
+// ClearAll cache.
 func ClearAll() error {
 	if _cache == nil {
 		logs.Error("clear_all cache is nil")

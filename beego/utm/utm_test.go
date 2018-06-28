@@ -1,4 +1,4 @@
-package restful
+package utm
 
 import (
 	"net/url"

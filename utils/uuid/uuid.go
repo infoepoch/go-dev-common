@@ -1,5 +1,5 @@
 // +----------------------------------------------------------------------
-// | 
+// |
 // | Created by InteliJ IDE
 // +----------------------------------------------------------------------
 // | Mohoo Go [ WE CAN DO IT JUST THINK IT ]
@@ -15,13 +15,11 @@
 // +----------------------------------------------------------------------
 package uuid
 
-import (
-	"github.com/satori/go.uuid"
-	"errors"
-)
+import "errors"
 
-func GetUuid() (string, error) {
-	u, e := uuid.NewV4();
+// GetUUID 获取 uuid
+func GetUUID() (string, error) {
+	u, e := uuid.NewV4()
 	if e != nil {
 		return "", errors.New("new uuid v4 error")
 	}
