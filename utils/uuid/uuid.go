@@ -15,10 +15,13 @@
 // +----------------------------------------------------------------------
 package uuid
 
-import "errors"
+import (
+	"errors"
+	"github.com/satori/go.uuid"
+)
 
 // GetUUID 获取 uuid
-func GetUUID() (string, error) {
+func GetUuid() (string, error) {
 	u, e := uuid.NewV4()
 	if e != nil {
 		return "", errors.New("new uuid v4 error")

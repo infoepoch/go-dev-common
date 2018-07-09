@@ -19,11 +19,11 @@ type UtmIo struct {
 // GetUtm 获取
 func GetUtm(c beego.Controller) {
 	// 获取 url
-	var utm_source := c.GetString("utm_source")
-	var utm_medium := c.GetString("utm_medium")
-	var utm_campaign := c.GetString("utm_campaign")
-	var utm_content := c.GetString("utm_content")
-	var utm_term := c.GetString("utm_term")
+	utm_source := c.GetString("utm_source")
+	utm_medium := c.GetString("utm_medium")
+	utm_campaign := c.GetString("utm_campaign")
+	utm_content := c.GetString("utm_content")
+	utm_term := c.GetString("utm_term")
 
 	// 设置到 session
 	c.SetSession("utm_source", utm_source)
