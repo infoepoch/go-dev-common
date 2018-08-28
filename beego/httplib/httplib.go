@@ -33,6 +33,7 @@ func Post(reqUrl string, params interface{}) ([]byte, error) {
 	logs.Info("request-post-params: ", string(log_params_str))
 
 	req, _ := httplib.Post(reqUrl).SetTimeout(httpConnectTimeout, httpReadWriteTimeout).JSONBody(params)
+	req.Header("Content-Type", "application/json;charset=utf-8")
 	b, err := req.Bytes()
 
 	logs.Info("request-post-error: ", err)
